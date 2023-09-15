@@ -1,0 +1,179 @@
+file_path = input(f'Please enter the file path to the RAND data: ')
+input_data = []
+#creating a new file to add results to
+new_file_path = 'RAND_RESULTS.csv'
+
+with open(file_path, 'r') as file:
+    #opening file and creating a list of lists
+    for line in file:
+        row = line.strip().split(',')  # Assuming comma-separated values
+        input_data.append(row)
+
+def scenario_1(response):
+    #Scenerio 1: 1,2,20,22,34,36
+        #should only be called if there is a response
+    if response == 1:
+        return 100
+    elif response == 2:
+        return 75
+    elif response == 3:
+        return 50
+    elif response == 4:
+        return 25
+    elif response == 5:
+        return 0
+    else:
+        return "*ERROR:Input Not Valid"
+
+def scenario_2(response):
+    #Scenerio 2: 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+        #should only be called if there is a response
+    if response == 1:
+        return 0
+    elif response == 2:
+        return 50
+    elif response == 3:
+        return 10
+    else:
+        return "*ERROR:Input Not Valid"
+
+def scenario_3(response):
+    #Scenerio 3: 13, 14, 15, 16, 17, 18, 19
+        #should only be called if there is a response
+    if response == 1:
+        return 0
+    elif response == 2:
+        return 100
+    else:
+        return "*ERROR:Input Not Valid"
+
+def scenario_4(response):
+    #Scenerio 4: 21, 23, 26, 27, 30
+        #should only be called if there is a response
+    if response == 1:
+        return 100
+    elif response == 2:
+        return 80
+    elif response == 3:
+        return 60
+    elif response == 4:
+        return 40
+    elif response == 5:
+        return 20
+    elif response == 6:
+        return 0
+    else:
+        return "*ERROR:Input Not Valid"
+
+def scenario_5(response):
+    #Scenerio 4: 24, 25, 28, 29, 31
+        #should only be called if there is a response
+    if response == 1:
+        return 0
+    elif response == 2:
+        return 20
+    elif response == 3:
+        return 40
+    elif response == 4:
+        return 60
+    elif response == 5:
+        return 80
+    elif response == 6:
+        return 100
+    else:
+        return "*ERROR:Input Not Valid"
+
+def scenario_6(response):
+    #Scenerio 4: 32, 33, 35
+        #should only be called if there is a response
+    if response == 1:
+        return 0
+    elif response == 2:
+        return 25
+    elif response == 3:
+        return 50
+    elif response == 4:
+        return 75
+    elif response == 5:
+        return 100
+    else:
+        return "*ERROR:Input Not Valid"
+
+group1 = [1,2,20,22,34,36]
+group2 = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+group3 = [13, 14, 15, 16, 17, 18, 19]
+group4 = [21, 23, 26, 27, 30]
+group5 = [24, 25, 28, 29, 31]
+group6 = [32, 33, 35]
+'''next section is for use only until example is provided'''
+#data = [(1, 2),(2, 4),(3, 3),(4, 1),(5, 5),(6, 2),(7, 4),(8, 3),(9, 2),(10, 1),(11, 5),(12, 2)
+#    ,(13, 1),(14, 4),(15, 4),(16, 3),(17, 2),(18, 3),(19, 3),(20, 1),(21, 2),(22, 5),(23, 5),(24, 1)
+#    ,(25, 5),(26, 5),(27, 1),(28, 4),(29, 3),(30, 2),(31, 3),(32, 4),(33, 5),(34, 2),(35, 4),(36, 2)]
+data = input_data
+'''end of section'''
+recoded_data = [["ID",]]
+error = ''
+not_first_three_rows = False
+
+
+for row in data:
+    q_num = 0
+    new_row = []
+    new_row.append(row[0])
+    filled = True
+    for part in row:
+        if part == '':
+            filled = False
+
+    if row[0] == data[3][0]:
+        not_first_three_rows = True
+
+    # and filled == True
+    if not_first_three_rows:
+        row = row[:37]
+        for column in row:
+            if q_num in group1:
+                number = scenario_1(column)
+                new_row.append(number)
+            elif q_num in group2:
+                number = scenario_2(column)
+                new_row.append(number)
+            elif q_num in group3:
+                number = scenario_3(column)
+                new_row.append(number)
+            elif q_num in group4:
+                number = scenario_4(column)
+                new_row.append(number)
+            elif q_num in group5:
+                number = scenario_5(column)
+                new_row.append(number)
+            elif q_num in group6:
+                number = scenario_6(column)
+                new_row.append(number)
+            else:
+                #error += "*ERROR: Input Does Not Meet Required Criteria"
+                #new_row.append(error)
+                #print(q_num)
+                pass
+            q_num += 1
+            print(q_num)
+        recoded_data.append(new_row)
+
+
+def create_rand_file(data, filename):
+    """
+    Create a CSV file with the given filename and write the data (list of lists) as rows.
+    """
+    with open(filename, 'w') as randfile:
+
+        for row in data:
+
+            st_row = str(row).strip("]").strip("[").strip("'")
+            st_row = st_row.replace("'", "")
+            randfile.write(st_row + '\n')
+
+input_data = recoded_data
+
+# Call the function to create the CSV file
+create_rand_file(input_data, 'RAND_RESULTS.csv')
+print("CSV file created successfully!")
